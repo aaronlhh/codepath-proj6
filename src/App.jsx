@@ -46,7 +46,7 @@ function App() {
             <div className='App-page'>
                 {   
                     list && 
-                    <>
+                    <div className='App-row'>
                         <Card 
                             number = "New York"
                             label = "New York, USA"
@@ -59,18 +59,20 @@ function App() {
                             number = {`${list.data['0']['moon_phase'].toFixed(1)}`}
                             label = "Moon Phase"
                         />
-                    </>
+                    </div>
                 }
-
-                {   
-                    filterList &&
-                    <List 
-                        handleButton={handleButton}
-                        updateDate = {setDate}
-                        updatePhase = {setPhase}
-                        list = {filterList}
-                    />
-                }
+                <div className='App-row'>
+                    {   
+                        filterList &&
+                        <List 
+                            handleButton={handleButton}
+                            updateDate = {setDate}
+                            updatePhase = {setPhase}
+                            list = {filterList}
+                        />
+                    }
+                </div>
+                
             </div>
 
         </>
