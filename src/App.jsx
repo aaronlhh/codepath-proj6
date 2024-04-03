@@ -1,81 +1,54 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import {BrowserRouter, Routes, Route, useRoutes} from 'react-router-dom'
+import DateDetail from '../routes/DateDetail.jsx'
+import Layout from '../routes/Layout.jsx'
 import Card from '../components/Card';
 import List from '../components/List';
+import HomePage from '../routes/HomePage.jsx'
 
 function App() {
     const API_KEY = import.meta.env.VITE_API_KEY;
     // date, average temparature, MoonRise time, moonphase
     const [list, setList] = useState(null);
-    const [date, setDate] = useState('');
-    const [phase, setPhase] = useState('');
-    const [filterList, setFilterList] = useState(null);
     useEffect(() => {
         const fetchForcast = async () => {
-            let query = `https://api.weatherbit.io/v2.0/forecast/daily?city=New+York&key=${API_KEY}`
+            let query = `https://api.weatherbit.io/v2.0/forecast/daily?units=I&city=New+York&key=${API_KEY}`
             const response = await fetch(query);
             const json = await response.json();
             setList(json);
-            setFilterList(json.data);
             console.log(json.data);
         };
         fetchForcast().catch(console.error);
     }, []);
 
-    const handleButton = () => {
-        let FilteredData = Object.values(list.data);
-        if (date !== ''){
-            FilteredData = FilteredData.filter((value) => 
-                value.valid_date.includes(date)
-            );
-            console.log(FilteredData);
-        }
-
-        if (phase !== ''){
-            FilteredData = FilteredData.filter((value) => 
-                value.moon_phase.toFixed(1) <= phase
-            );
-            console.log(FilteredData);
-        }
-
-        setFilterList(FilteredData);
-    };
+    // let elements = useRoutes([
+    //     {
+    //         element: <HomePage list={list} />,
+    //         path: '/',
+    //         children: [
+    //             {
+    //                 element: <DateDetail list={list} />,
+    //                 path: '/:date'
+    //             },
+    //         ]
+    //     },
+    // ]);
 
     return (
-        <>
-            <div className='App-page'>
-                {   
-                    list && 
-                    <div className='App-row'>
-                        <Card 
-                            number = "New York"
-                            label = "New York, USA"
-                        />
-                        <Card 
-                            number = {new Date(list.data['0']['moonrise_ts']*1000).toUTCString().slice(-11, -4)}
-                            label = "Moon Rise"
-                        />
-                        <Card 
-                            number = {`${list.data['0']['moon_phase'].toFixed(1)}`}
-                            label = "Moon Phase"
-                        />
-                    </div>
-                }
-                <div className='App-row'>
-                    {   
-                        filterList &&
-                        <List 
-                            handleButton={handleButton}
-                            updateDate = {setDate}
-                            updatePhase = {setPhase}
-                            list = {filterList}
-                        />
+        <BrowserRouter>
+            <Routes>
+                <Route path='/' element={<Layout />}>
+                    {
+                        list&& 
+                        <>
+                            <Route index={true} element={<HomePage list={list} />} />
+                            <Route index={false} path='/:date' element={<DateDetail list={list} />} />
+                        </>
                     }
-                </div>
-                
-            </div>
-
-        </>
+                </Route>
+            </Routes>
+        </BrowserRouter>
     )
 }
 

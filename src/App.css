@@ -40,3 +40,67 @@
 .read-the-docs {
   color: #888;
 }
+
+.App {
+    display: flex;
+    flex-direction: column;
+    font-family: Avenir, Century Gothic, sans-serif;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 100;
+    justify-content: center;
+}
+
+.App-sidebar {
+    top: 0;
+    left: 0;
+    position: fixed;
+    overflow-x: hidden;
+    height: 100%;
+    width: 200px;
+    padding-left: 20px;
+    backdrop-filter: blur(1px);
+    background-color: hsla(0, 3%, 65%, 0.049);
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    padding-top: 10px;
+}
+
+.Logo {
+    height: calc(10px + 2vmin);
+    padding-right: 10px;
+    padding-top: 35px;
+}
+
+.App-page {
+    padding-left: 250px;
+}
+
+ul {
+    padding-left: 5px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: flex-start;
+    flex: 0 0 auto;
+    flex-direction: column;
+    justify-content: flex-start;
+    list-style: none;
+    margin: 0;
+    padding: 0 0 35px;
+    
+}
+
+.menu-link {
+    color: black;
+}
+
+.details {
+    padding: 20px 20px 40px;
+    text-align: left;
+    width: 800px;
+}
